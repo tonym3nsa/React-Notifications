@@ -66,14 +66,12 @@ class Toast extends Component {
         });
 
 
-        console.log('will disappear after :', totalWaiting + visibilityTimeout);
-
+      
         setTimeout(() => {
             const queueAfterRemoveMessage = filterOnlyFirst(this.state.queue, (item) => (
                 item.title === title && item.level === level && item.text === text
             ));
 
-            console.log('queueAfterRemoveMessage = ', queueAfterRemoveMessage);
             this.setState({
                 queue: queueAfterRemoveMessage
             })
