@@ -5,6 +5,7 @@ node_modules
 _SpecRunner.html
 __benchmarks__
 build/
+src/assets/scss/.sass-cache/
 remote-repo/
 coverage/
 .module-cache
