@@ -1,7 +1,7 @@
 
 # React-Notifications
 
-React toast notifications app.
+React toast notifications app. Demo [here](https://react-notifications-bba94.firebaseapp.com)
 
 Requirements:
 - Git
