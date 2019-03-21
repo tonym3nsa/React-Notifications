@@ -7,23 +7,35 @@ const iconClasses = {
     error: 'fas fa-times'
 };
 
-const minVisiblityTimeout = 5500; // 1.5 sec
+const minVisiblityTimeout = 1500; // 1.5 sec
 
 function calculateVisibility(title, text) {
-
+    /**
+     * Calculate visibility of toast notification depending on the length of text
+     * @param  {String} title   The title of the toast notification
+     * @param  {String} text    The message of the toast notification
+     * @return {Number}         The time depending on the length of the text within the notification
+     */
     let visibilityTimeout = (title.length + text.length) * 75;
     return visibilityTimeout > minVisiblityTimeout ? visibilityTimeout : minVisiblityTimeout;
 }
 
-function filterOnlyFirst(array, predicate) {
+function filterOnlyFirst(queue, clone) {
+    /**
+     * Remove timed out notification based on order
+     * @param  {Array}      queue       List of active notifications
+     * @param  {Function}   clone       Notification to remove
+
+     */
     const removeByIndex = (list, index) =>
         [
             ...list.slice(0, index),
             ...list.slice(index + 1)
         ];
-    const indexOfFirstElement = array.findIndex(predicate);
-    if (indexOfFirstElement < 0) return array;
-    return removeByIndex(array, indexOfFirstElement);
+    const indexOfFirstElement = queue.findIndex(clone);
+    if (indexOfFirstElement < 0) return queue;
+
+    return removeByIndex(queue, indexOfFirstElement);
 
 }
 
@@ -33,13 +45,19 @@ class Toast extends Component {
     }
 
     showNotification = ({title, text, level}) => {
+        /**
+         * Calculate visibility of toast notification depending on the length of text
+         * @param  {String} title   The title of the toast notification
+         * @param  {String} text    The message of the toast notification
+         * @param  {String} level   The type of notification. Can be only one of the following types at a time: 'success', 'warning', 'error' and 'message'
+         */
         level = level.toLowerCase();
         const totalWaiting = this.state.queue.reduce(
             (a, b) => a + b.visibilityTimeout, 0
         );
 
         const visibilityTimeout = calculateVisibility(text, level);
-        // const visibilityTimeout = 1000000;
+        
         this.setState({
             queue: [
                 ...this.state.queue,
@@ -53,7 +71,7 @@ class Toast extends Component {
         setTimeout(() => {
             const queueAfterRemoveMessage = filterOnlyFirst(this.state.queue, (item) => (
                 item.title === title && item.level === level && item.text === text
-            ))
+            ));
 
             console.log('queueAfterRemoveMessage = ', queueAfterRemoveMessage);
             this.setState({
